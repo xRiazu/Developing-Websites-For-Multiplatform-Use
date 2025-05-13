@@ -1,0 +1,6 @@
+.ellipsis {
+    width: 200px; /* Set a fixed width */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
