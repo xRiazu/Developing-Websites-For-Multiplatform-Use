@@ -1,5 +1,6 @@
 <?php
-//include 'Components/header.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/database/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
 ?>
 
 <div class="bg-gradient-to-br from-purple-700 to-pink-500 min-h-screen flex flex-col justify-center items-center">
@@ -30,5 +31,5 @@
 </div>
 
 <?php
-include '/Components/footer.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
 ?>

@@ -1,5 +1,5 @@
 <?php
-include 'Compenents/header.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
 ?>
 
 <div class="min-h-screen bg-gray-800 py-6 flex flex-col justify-center sm:py-12">
@@ -49,5 +49,5 @@ include 'Compenents/header.php';
     </div>
 </div>
 <?php
-include 'Compenents/footer.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
 ?>

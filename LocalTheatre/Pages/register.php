@@ -1,9 +1,9 @@
 <?php
-include 'Components/header.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
 ?>
 
 <div class="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
-    <h1 class="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">Welcome to My Company</h1>
+    <h1 class="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">Welcome!</h1>
     <form action="#" class="w-full flex flex-col gap-4">
       <div class="flex items-start flex-col justify-start">
         <label for="firstName" class="text-sm text-gray-700 dark:text-gray-200 mr-2">First Name:</label>
@@ -46,5 +46,5 @@ include 'Components/header.php';
 </div>
 
 <?php
-include 'Components/footer.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
 ?>

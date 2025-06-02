@@ -1,8 +1,46 @@
 <?php
-include 'Database/config.php';
-include 'Components/header.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/database/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
+$BlogID = $_GET['bid'];
+$UserID = isset($_SESSION['id']) ? $_SESSION['id'] : null;
 
+$blogs = $conn->prepare("SELECT
+b.BlogTitle,
+b.BlogContent,
+b.BlogStatus,
+b.BlogCreated,
+u.firstname,
+u.surname
+
+FROM blogs b
+INNER JOIN users u ON b.BlogAuthorFK = u.UserID
+WHERE b.BlogID = $BlogID
+");
+$blogs->execute();
+$blogs->store_result();
+$blogs->bind_result( $BlogTitle, $blogContent, $BlogStatus, $BlogCreated, $firstname, $surname);
+$blogs->fetch();
+
+// blog comments //
+$blog_comments = $conn->prepare("SELECT
+bc.CommentTitle
+bc.CommentCreated,
+bc.CommentStatus,
+u.firstname,
+u.surname
+
+FROM blog_comments bc
+INNER JOIN users u ON bc.users_UserID = u.id
+WHERE bc.BlogID = $BlogID AND bc.BlogStatus = 'Approved'
+");
+$blog_comments->execute();
+$blog_comments->store_result();
+$blog_comments->bind_result( $comment, $commentCreated, $firstname);
+
+$date = new DateTime($created);
+$formattedDate = $date->format("F j, Y, g:i A");
 ?>
+
 
 
 <div class="flex flex-col">
@@ -81,5 +119,5 @@ include 'Components/header.php';
     </div>
 </div>
 <?php
-include 'Compenents/footer.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
 ?>
