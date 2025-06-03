@@ -1,6 +1,6 @@
 <?php 
-    include 'components/header.php';
-    include 'database/config.php';
+    include 'Components/header.php';
+    include 'Database/config.php';
     $uid = isset($_GET['uid']) ? (int) $_GET['uid'] : 0;
 
     $user = $conn->prepare("SELECT
@@ -34,4 +34,4 @@ $users->fetch();
       <button type="submit"
         class="!mt-8 w-full px-4 py-2.5 mx-auto block text-sm bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
     </form>
-<?php include 'components/footer.php' ?>
+<?php include 'Components/footer.php' ?>

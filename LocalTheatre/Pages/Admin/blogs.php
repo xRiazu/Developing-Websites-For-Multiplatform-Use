@@ -1,7 +1,7 @@
 
 <?php
-include 'database/config.php';
-include 'components/header.php';
+include 'Database/config.php';
+include 'Components/header.php';
 
 $comments = $conn->prepare("SELECT
 BlogID,
@@ -67,5 +67,5 @@ $comments->bind_result($BlogID,$BlogTitle, $BlogStatus, $BlogCreated); // Bind t
   </table>
 </div>
 <?php
-include 'components/footer.php';
+include 'Components/footer.php';
 ?>

@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Get the requested URL from the 'url' query parameter
 $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
 // Define available routes (URL => corresponding PHP file)

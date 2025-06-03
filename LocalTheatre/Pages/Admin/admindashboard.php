@@ -1,6 +1,6 @@
 <?php
-include 'components/header.php';
-include 'database/config.php';
+include 'Components/header.php';
+include 'Database/config.php';
 
 $users = $conn->prepare("SELECT
     u.UserID,
@@ -137,4 +137,4 @@ $users->bind_result($uid, $Username, $firstname, $surname, $created, $email, $to
     document.getElementById('modal').classList.add('hidden');
   });
 </script>
-<?php include 'components/footer.php' ?>
+<?php include 'Components/footer.php' ?>

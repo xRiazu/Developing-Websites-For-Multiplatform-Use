@@ -1,8 +1,7 @@
 <?php
-define('ROOT DIR', 'C:\xampp\htdocs\Developing-Websites-For-Multiplatform-Use\Local Theatre');
+define('ROOT_DIR', '/Developing-Websites-For-Multiplatform-Use-1/LocalTheatre/');
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
 ?>
 
 <!DOCTYPE html>

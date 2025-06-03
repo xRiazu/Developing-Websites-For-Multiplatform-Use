@@ -1,6 +1,6 @@
 <?php 
-    include 'components/header.php';
-    include 'database/config.php';
+    include 'Components/header.php';
+    include 'Database/config.php';
     // if(!isset($_SESSION['loggedin'])){
     //     header('Location: login');
     // }
@@ -37,4 +37,4 @@
 </section>
 </main>
 <h1 class="text-2xl font-bold text-center mt-6">User uploads</h1>
-<?php include 'components/footer.php'; ?>
+<?php include 'Components/footer.php'; ?>

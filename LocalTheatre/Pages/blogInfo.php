@@ -1,6 +1,6 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/database/config.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
+include 'Database/config.php';
+include 'Components/header.php';
 $BlogID = $_GET['bid'];
 $UserID = isset($_SESSION['id']) ? $_SESSION['id'] : null;
 
@@ -9,6 +9,7 @@ b.BlogTitle,
 b.BlogContent,
 b.BlogStatus,
 b.BlogCreated,
+b.image_url,
 u.firstname,
 u.surname
 
@@ -18,26 +19,27 @@ WHERE b.BlogID = $BlogID
 ");
 $blogs->execute();
 $blogs->store_result();
-$blogs->bind_result( $BlogTitle, $blogContent, $BlogStatus, $BlogCreated, $firstname, $surname);
+$blogs->bind_result( $BlogTitle, $blogContent, $BlogStatus, $BlogCreated, $BlogImg, $firstname, $surname);
 $blogs->fetch();
 
 // blog comments //
 $blog_comments = $conn->prepare("SELECT
-bc.CommentTitle
+bc.CommentTitle,
 bc.CommentCreated,
 bc.CommentStatus,
 u.firstname,
-u.surname
+u.surname,
+u.Username
 
 FROM blog_comments bc
-INNER JOIN users u ON bc.users_UserID = u.id
-WHERE bc.BlogID = $BlogID AND bc.BlogStatus = 'Approved'
+INNER JOIN users u ON bc.CommentID = u.UserID
+WHERE bc.CommentID = $BlogID AND bc.CommentStatus = 'Approved'
 ");
 $blog_comments->execute();
 $blog_comments->store_result();
-$blog_comments->bind_result( $comment, $commentCreated, $firstname);
+$blog_comments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $firstname, $surname, $username);
 
-$date = new DateTime($created);
+$date = new DateTime($BlogCreated);
 $formattedDate = $date->format("F j, Y, g:i A");
 ?>
 
@@ -53,7 +55,7 @@ $formattedDate = $date->format("F j, Y, g:i A");
     <div class="bg-white py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row">
             <div class="w-full md:w-3/4 px-4">
-                <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063" alt="Blog Featured Image" class="mb-8">
+                <img src="<?=ROOT_DIR?>Assets/shows/<?= $BlogImg ?>" alt="Blog Featured Image" class="mb-8">
                 <div class="prose max-w-none">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed sit amet feugiat
                         eros, eget eleifend dolor. Proin maximus bibendum felis, id fermentum odio vestibulum id. Sed ac
@@ -119,5 +121,5 @@ $formattedDate = $date->format("F j, Y, g:i A");
     </div>
 </div>
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
+include 'Components/footer.php';
 ?>

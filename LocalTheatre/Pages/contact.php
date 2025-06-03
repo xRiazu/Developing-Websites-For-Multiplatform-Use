@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/header.php');
+include 'Components/header.php';
 ?>
 
 <div class="min-h-screen bg-gray-800 py-6 flex flex-col justify-center sm:py-12">
@@ -49,5 +49,5 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/
     </div>
 </div>
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/components/footer.php');
+include 'Components/footer.php';
 ?>

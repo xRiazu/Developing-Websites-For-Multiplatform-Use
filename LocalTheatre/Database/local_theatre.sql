@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2025 at 11:11 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jun 03, 2025 at 12:37 PM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 8.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,15 +36,17 @@ CREATE TABLE `blogs` (
   `BlogAuthorFK` int(11) NOT NULL,
   `ShowIDFK` int(11) NOT NULL,
   `image_url` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `blogs`
 --
 
 INSERT INTO `blogs` (`BlogID`, `BlogTitle`, `BlogContent`, `BlogStatus`, `BlogCreated`, `BlogAuthorFK`, `ShowIDFK`, `image_url`) VALUES
-(1, 'Review of Shrek', 'Great performance by the cast!', 'Approved', '2025-06-02 09:10:32', 1, 1, 'shrek_the_movie.jpg'),
-(2, 'Review of Grease', 'Great performance by the cast!', 'Approved', '2025-06-02 09:10:32', 1, 2, 'grease_musical.jpg');
+(1, 'Review of Shrek', 'Great performance by the cast!', 'Approved', '2025-06-03 08:45:48', 1, 1, 'shrek_the_movie.jpeg'),
+(2, 'Review of Grease', 'Great performance by the cast!', 'Approved', '2025-06-03 09:40:58', 1, 2, 'grease_musical.jpg'),
+(3, 'Life Of Pi Review', 'A Real Tiger?!', 'Approved', '2025-06-03 13:45:32', 1, 3, 'life_of_pi.jpeg'),
+(4, 'Mary Poppins Review', 'How Did She Fly?', 'Approved', '2025-06-03 20:30:32', 1, 4, 'mary_poppins.jpg');
 
 -- --------------------------------------------------------
 
@@ -59,7 +61,7 @@ CREATE TABLE `blog_comments` (
   `CommentStatus` enum('Pending','Approved','Rejected') NOT NULL DEFAULT 'Pending',
   `CommentBlogIDFK` int(11) NOT NULL,
   `UserIDFK` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `blog_comments`
@@ -80,7 +82,7 @@ CREATE TABLE `news` (
   `NewsCreated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `ShowIDFK` int(11) NOT NULL,
   `NewsAddedByFK` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `news`
@@ -102,7 +104,7 @@ CREATE TABLE `shows` (
   `DateShown` date NOT NULL,
   `DateAdded` date NOT NULL,
   `showimage_url` varchar(128) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `shows`
@@ -111,7 +113,9 @@ CREATE TABLE `shows` (
 INSERT INTO `shows` (`ShowID`, `ShowName`, `ShowType`, `DateShown`, `DateAdded`, `showimage_url`) VALUES
 (1, 'Shrek', 'Drama', '2025-06-01', '2025-05-20', 'shrek_the_movie.jpg'),
 (2, 'Grease', 'Musical', '2025-06-02', '2025-05-20', 'grease_musical.jpg'),
-(3, 'Life_Of_Pi', 'Drama', '2025-06-03', '2025-05-20', 'life_of_pi.jpg');
+(3, 'Life_Of_Pi', 'Drama', '2025-06-03', '2025-05-20', 'life_of_pi.jpg'),
+(4, 'Mary_Poppins', 'Musical', '2025-06-03', '2025-06-04', 'mary_poppins.jpg'),
+(5, 'Winnie_The_Pooh', 'Musical', '2025-06-04', '2025-06-03', 'winnie_the_pooh.jpeg');
 
 -- --------------------------------------------------------
 
@@ -124,15 +128,17 @@ CREATE TABLE `users` (
   `Username` varchar(12) NOT NULL,
   `UserEmail` varchar(32) NOT NULL,
   `UserRole` enum('User','Admin') NOT NULL DEFAULT 'User',
-  `UserPassword` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `UserPassword` varchar(32) NOT NULL,
+  `firstname` varchar(64) DEFAULT NULL,
+  `surname` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `Username`, `UserEmail`, `UserRole`, `UserPassword`) VALUES
-(1, 'uzair_moh', 'moh@example.com', 'Admin', 'securepassword');
+INSERT INTO `users` (`UserID`, `Username`, `UserEmail`, `UserRole`, `UserPassword`, `firstname`, `surname`) VALUES
+(1, 'uzair_moh', 'moh@example.com', 'Admin', 'securepassword', 'Uzair', 'Mohammed');
 
 --
 -- Indexes for dumped tables
@@ -182,7 +188,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `BlogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `BlogID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `blog_comments`
@@ -200,7 +206,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `shows`
 --
 ALTER TABLE `shows`
-  MODIFY `ShowID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ShowID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`

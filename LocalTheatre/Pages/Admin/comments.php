@@ -1,7 +1,7 @@
 <?php
 // Include database configuration and header
-include 'database/config.php';
-include 'components/header.php';
+include 'Database/config.php';
+include 'Components/header.php';
 
 // Prepare the SQL query to fetch comments along with blog and user data
 $comments = $conn->prepare("SELECT
@@ -102,5 +102,5 @@ $comments->bind_result($commentId, $comment, $created, $commentStatus, $firstnam
 
 <?php
 // Include the footer
-include 'components/footer.php';
+include 'Components/footer.php';
 ?>

@@ -1,7 +1,7 @@
 <?php
 $hn = "localhost";
-$un = "uzair_admin";
-$pw = "BINGb7Z@]]LsKnYk";
+$un = "root";
+$pw = "";
 $db = "local_theatre";
 // Create database connection
 $conn = new mysqli($hn, $un, $pw, $db);
