@@ -19,7 +19,7 @@ WHERE b.BlogID = $BlogID
 ");
 $blogs->execute();
 $blogs->store_result();
-$blogs->bind_result( $BlogTitle, $blogContent, $BlogStatus, $BlogCreated, $BlogImg, $firstname, $surname);
+$blogs->bind_result( $BlogTitle, $BlogContent, $BlogStatus, $BlogCreated, $BlogImg, $firstname, $surname);
 $blogs->fetch();
 
 // blog comments //
@@ -27,6 +27,7 @@ $blog_comments = $conn->prepare("SELECT
 bc.CommentTitle,
 bc.CommentCreated,
 bc.CommentStatus,
+bc.CommentBlogIDFK,
 u.firstname,
 u.surname,
 u.Username
@@ -37,89 +38,92 @@ WHERE bc.CommentID = $BlogID AND bc.CommentStatus = 'Approved'
 ");
 $blog_comments->execute();
 $blog_comments->store_result();
-$blog_comments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $firstname, $surname, $username);
+$blog_comments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $BlogComment, $firstname, $surname, $username);
 
 $date = new DateTime($BlogCreated);
 $formattedDate = $date->format("F j, Y, g:i A");
 ?>
 
+<section class="bg-white dark:bg-gray-900">
+    <div class="container px-6 py-10 mx-auto">
+        <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"><?= $BlogTitle ?></h1>
+         <div class="mt-8 lg:-mx-6 lg:flex lg:items-center">
+            <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96" src="<?= ROOT_DIR ?>Assets/shows/<?= $BlogImg ?>"alt="">
+             <div class="flex flex-col">
+             <?php if (isset($_SESSION['status_message'])) : ?>
+            <div class="status-message"><?= $_SESSION['status_message'] ?></div>
+          <?php unset($_SESSION['status_message']) ?>
+          <?php endif ?>
+              <div class="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
+                  <p href="#" class="block mt-4 text-2xl font-semibold text-gray-800 hover:underline dark:text-white md:text-3xl">
+                  <?= $BlogTitle ?>                
+                  </p>
 
+                  <p class="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
+                      <?= $BlogContent ?>
+                  </p> 
+                  <div class="flex items-center mt-6">
+                      <img class="object-cover object-center w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1531590878845-12627191e687?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="">
 
-<div class="flex flex-col">
-    <div class="bg-gray-100 py-8">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Blog Title Here</h1>
-            <p class="text-gray-600">Published on April 4, 2023</p>
-        </div>
-    </div>
-    <div class="bg-white py-8">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row">
-            <div class="w-full md:w-3/4 px-4">
-                <img src="<?=ROOT_DIR?>Assets/shows/<?= $BlogImg ?>" alt="Blog Featured Image" class="mb-8">
-                <div class="prose max-w-none">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed sit amet feugiat
-                        eros, eget eleifend dolor. Proin maximus bibendum felis, id fermentum odio vestibulum id. Sed ac
-                        ligula eget dolor consequat tincidunt. Nullam fringilla ipsum et ex lacinia, at bibendum elit
-                        posuere. Aliquam eget leo nec nibh mollis consectetur.</p>
-                    <p>Suspendisse potenti. Mauris euismod, magna sit amet aliquam dapibus, ex sapien porta nisl, vel
-                        auctor orci velit in risus. Fusce gravida bibendum dui, id volutpat felis dignissim a. Duis
-                        sagittis, arcu ac convallis bibendum, neque dolor suscipit dolor, non malesuada magna orci a
-                        mauris. Proin sollicitudin diam eu enim tincidunt dapibus. Aliquam pharetra purus mauris, id
-                        lacinia mi malesuada ut. Integer dignissim, urna nec scelerisque feugiat, lacus sapien tincidunt
-                        sem, sed luctus enim libero vel nunc. Vivamus ornare, felis quis feugiat luctus, orci justo
-                        auctor urna, et elementum orci dolor ac ante. Ut varius sapien nec fringilla sodales.
-                        Suspendisse lacinia, metus eu suscipit lobortis, enim sapien commodo sapien, non facilisis urna
-                        elit eget elit.</p>
-                    <p>Nulla facilisi. Sed venenatis pretium ante, sed tempor turpis sagittis ac. Pellentesque habitant
-                        morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vel diam arcu.
-                        Maecenas bibendum efficitur ex sit amet tristique. Nulla vel sapien euismod, bibendum velit id,
-                        facilisis magna. Sed vestibulum nisi vitae justo congue, eu bibendum augue interdum. Nam quis
-                        orci nec nulla posuere facilisis. Etiam feugiat ligula quis est auctor, et sagittis orci
-                        elementum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-                        Curae; Sed gravida neque vel tellus volutpat, vel laoreet lacus commodo. Vivamus quis enim leo.
-                    </p>
-                </div>
-            </div>
-            <div class="w-full md:w-1/4 px-4">
-                <div class="bg-gray-100 p-4">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Posts</h2>
-                    <ul class="list-none">
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Blog Post 1</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Blog Post 2</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Blog Post 3</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Blog Post 4</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="bg-gray-100 p-4 mt-4">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Categories</h2>
-                    <ul class="list-none">
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Category 1</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Category 2</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Category 3</a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#" class="text-gray-700 hover:text-gray-900">Category 4</a>
-                        </li>
-                    </ul>
-                </div>
+                      <div class="mx-4">
+                          <h1 class="text-sm text-gray-700 dark:text-gray-200"><?= $firstname . ' ' . $surname ?></h1>
+                          <p class="text-sm text-gray-500 dark:text-gray-400"><?= $formattedDate ?></p>
+                      </div>
+                  </div>
+              </div>
+              <?php if(isset($_SESSION['id'])) : ?>
+              <div class="mt-20">
+                <form id="commentForm" action="commentControllerSanitise?bid=<?= $BlogID ?>&uid=<?=$UserID?>" method="post">
+                <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Comment on <?= $BlogTitle ?></label>
+                  <textarea id="comment" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your comment..."></textarea>
+                  <button type="submit" class="relative inline cursor-pointer text-xl font-medium before:bg-violet-600  before:absolute before:-bottom-1 before:block before:h-[2px] before:w-full before:origin-bottom-right before:scale-x-0 before:transition before:duration-300 before:ease-in-out hover:before:origin-bottom-left hover:before:scale-x-100">Submit Comment</button>
+                  <p class="mt-5">Your comment will appear once approved by admin</p>
+                </form>
+                <?php else : ?>
+                  <p>Please sign in to comment on this blog</p>
+              </div>
+              <?php endif ?>
             </div>
         </div>
-
+        
     </div>
+<div class="flex justify-center relative top-1/3">
+  <?php if ($BlogComment-> num_rows == 0) : ?>
+    <p class="mt-20">No comments have been left yet </p>
+    <?php else : ?>
+  <?php while($BlogComment->fetch()) : ?>
+<div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
+    <div class="relative flex gap-4">
+        <img src="https://icons.iconarchive.com/icons/diversity-avatars/avatars/256/charlie-chaplin-icon.png" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
+        <div class="flex flex-col w-full">
+            <div class="flex flex-row justify-between">
+                <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><?= $firstname ?></p>
+                <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
+            </div>
+            <p class="text-gray-400 text-sm"><?= $commentCreated ?></p>
+        </div>
+    </div>
+    <p class="-mt-4 text-gray-500"><?= htmlspecialchars($comment) ?></p>
 </div>
+<?php endwhile ?>
+<?php endif ?>
+</div>
+</section>
+<script>
+document.getElementById('commentForm').addEventListener('submit', function(event) {
+  const comment = document.getElementById('comment').value.trim();
+
+  // Basic checks
+  if (comment.length < 5) {
+    alert('Comment must be at least 5 characters long.');
+    event.preventDefault();
+  }
+  if (comment.length > 500) {
+    alert('Comment cannot be longer than 500 characters.');
+    event.preventDefault();
+  }
+});
+</script>
 <?php
 include 'Components/footer.php';
 ?>
