@@ -1,9 +1,9 @@
 <?php 
     include 'Components/header.php';
     include 'Database/config.php';
-    // if(!isset($_SESSION['loggedin'])){
-    //     header('Location: login');
-    // }
+    if(!isset($_SESSION['loggedin'])){
+         header('Location: login');
+    }
 
 ?>
 
@@ -24,13 +24,9 @@
         <label for="blogContent" class="block text-gray-600">Blog Content</label>    
         <textarea name="content" id="blogContent" class="block w-full border rounded p-2"></textarea>
       
-        <label for="audioUrl" class="block text-gray-600">Audio URL (If required)</label>    
+        <label for="audioUrl" class="block text-gray-600">Blog Image</label>    
         <input type="text" name="audio_url" id="audioUrl" class="block w-full border rounded p-2">
-      
-        <label for="spotifyEmbed" class="block text-gray-600">Spotify Embed (If required)</label>    
-        <textarea name="spotify_embed" id="spotifyEmbed" class="block w-full border rounded p-2"></textarea>
-       
-    
+
         
         <input type="submit" name="submit" value="Upload" class="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-blue-600">
     </form>

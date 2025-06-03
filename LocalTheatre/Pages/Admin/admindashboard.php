@@ -7,7 +7,6 @@ $users = $conn->prepare("SELECT
     u.Username,
     u.firstname,
     u.surname,
-    u.created_on,
     u.UserEmail
     COUNT(c.id) AS total_comments
 FROM users u
@@ -16,7 +15,7 @@ GROUP BY u.id, u.Username, u.firstname, u.surname, u.created_on, u.email
 ORDER BY u.created_on");
 $users->execute();               // Execute the query
 $users->store_result();          // Store the result
-$users->bind_result($uid, $Username, $firstname, $surname, $created, $email, $total_comments);
+$users->bind_result($uid, $Username, $firstname, $surname, $email, $total_comments);
 ?>
 <h1>All Users</h1>
 <?php if (isset($_SESSION['status_message'])) : ?>

@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="lg:flex lg:items-center">
             <a href="javascript:void(0)">
-              <img src="https://readymadeui.com/readymadeui-light.svg" alt="logo" class="w-48" />
+            <img src="<?= ROOT_DIR ?>Assets/shows/clyde_theatre_tp.png" alt="The Local Theatre Logo" class="w-14 h-14 p-1" />
             </a>
           </div>
 

@@ -23,7 +23,7 @@ $blogs->bind_result( $BlogTitle, $BlogContent, $BlogStatus, $BlogCreated, $BlogI
 $blogs->fetch();
 
 // blog comments //
-$blog_comments = $conn->prepare("SELECT
+$BlogComments = $conn->prepare("SELECT
 bc.CommentTitle,
 bc.CommentCreated,
 bc.CommentStatus,
@@ -36,9 +36,10 @@ FROM blog_comments bc
 INNER JOIN users u ON bc.CommentID = u.UserID
 WHERE bc.CommentID = $BlogID AND bc.CommentStatus = 'Approved'
 ");
-$blog_comments->execute();
-$blog_comments->store_result();
-$blog_comments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $BlogComment, $firstname, $surname, $username);
+$BlogComments->execute();
+$BlogComments->store_result();
+$BlogComments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $BlogComment, $firstname, $surname, $username);
+
 
 $date = new DateTime($BlogCreated);
 $formattedDate = $date->format("F j, Y, g:i A");
@@ -88,10 +89,11 @@ $formattedDate = $date->format("F j, Y, g:i A");
         
     </div>
 <div class="flex justify-center relative top-1/3">
-  <?php if ($BlogComment-> num_rows == 0) : ?>
-    <p class="mt-20">No comments have been left yet </p>
+    
+  <?php while($BlogComments->fetch()) : ?>
+    <?php if ($BlogComments->num_rows == 0) : ?>
+      <p class="mt-20">No comments have been left yet </p>
     <?php else : ?>
-  <?php while($BlogComment->fetch()) : ?>
 <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
     <div class="relative flex gap-4">
         <img src="https://icons.iconarchive.com/icons/diversity-avatars/avatars/256/charlie-chaplin-icon.png" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
@@ -100,13 +102,13 @@ $formattedDate = $date->format("F j, Y, g:i A");
                 <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><?= $firstname ?></p>
                 <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
             </div>
-            <p class="text-gray-400 text-sm"><?= $commentCreated ?></p>
+            <p class="text-gray-400 text-sm"><?= $CommentCreated ?></p>
         </div>
     </div>
-    <p class="-mt-4 text-gray-500"><?= htmlspecialchars($comment) ?></p>
+    <p class="-mt-4 text-gray-500"><?= htmlspecialchars($CommentCreated) ?></p>
 </div>
-<?php endwhile ?>
 <?php endif ?>
+<?php endwhile ?>
 </div>
 </section>
 <script>
