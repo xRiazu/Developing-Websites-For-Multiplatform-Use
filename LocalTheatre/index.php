@@ -15,11 +15,11 @@ $routes = [
     'user/dashboard' => 'pages/user/dashboard.php', // user page route
 
     // admin dashboard
-    'admin/dashboard' => 'pages/admin/dashboard.php', // admin page route
+    'admin/admindashboard' => 'pages/admin/admindashboard.php', // admin page route
     'admin/comments' => 'pages/admin/comments.php', // comments page route
     'admin/blogs' => 'pages/admin/blogs.php', // blog table route
-    'admin/edit-user' => 'pages/admin/edit_user.php', // edit user page route
-    'admin/add-blog' => 'pages/admin/add_blog.php', // add blog page route
+    'admin/edit_user' => 'pages/admin/edit_user.php', // edit user page route
+    'admin/add_blog' => 'pages/admin/add_blog.php', // add blog page route
 
     // configuration files
     'registerController' => 'controller/registerController.php',

@@ -5,10 +5,9 @@ session_start();
 // Input sanitization
 $firstname = trim($_POST['firstname']);
 $surname = trim($_POST['surname']);
-$Username = trim($_POST['username']);
-$UserEmail = trim($_POST['email']);
-$UserPassword = trim($_POST['password']);
-$UserRole = trim($_POST['role']);
+$Username = trim($_POST['Username']);
+$UserEmail = trim($_POST['UserEmail']);
+$UserPassword = trim($_POST['UserPassword']);
 
 // Validate firstname and surname
 if (!preg_match('/^[a-zA-Z0-9]+$/', $firstname)) {
@@ -38,7 +37,7 @@ if (!filter_var($UserEmail, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Check if email already exists
-$stmt = $conn->prepare('SELECT id FROM users WHERE UserEmail = ?');
+$stmt = $conn->prepare('SELECT UserID FROM users WHERE UserEmail = ?');
 $stmt->bind_param('s', $UserEmail);
 $stmt->execute();
 $stmt->store_result();
@@ -55,10 +54,10 @@ $stmt->close();
 $hashed_password = password_hash($UserPassword, PASSWORD_DEFAULT);
 
 // Insert new user
-$stmt = $conn->prepare("INSERT INTO users (Username, UserEmail, UserRole, UserPassword, firstname, surname) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO users (Username, UserEmail, UserPassword, firstname, surname, UserRole) VALUES (?, ?, ?, ?, ?, 'User')");
 
 if ($stmt) {
-    $stmt->bind_param('ssssss', $Username, $UserEmail, $UserRole, $hashed_password, $firstname, $surname);
+    $stmt->bind_param('sssss', $Username, $UserEmail, $hashed_password, $firstname, $surname);
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {

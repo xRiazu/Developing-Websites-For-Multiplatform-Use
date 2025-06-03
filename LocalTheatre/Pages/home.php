@@ -49,7 +49,7 @@ $blogs->bind_result($BlogID, $BlogTitle, $BlogContent, $BlogStatus, $BlogCreated
 <div class="font-sans mt-10">
       <div class="grid lg:grid-cols-2 items-center lg:gap-y-6 bg-yellow-600">
         <div class="max-lg:order-1 max-lg:text-center sm:p-12 p-4 text-white">
-          <h2 class="lg:text-5xl text-3xl font-bold lg:!leading-[56px]">Elevate Your Experience with Modern Elegance</h2>
+          <h2 class="lg:text-5xl text-3xl font-bold lg:!leading-[56px]">Elevate Your Experience with the Theatre Experience</h2>
           <p class="mt-6 text-base leading-relaxed">Laboris qui Lorem ad tempor ut reprehenderit. Nostrud anim nulla officia ea sit deserunt. Eu eu quis anim aute Laboris qui Lorem ad tempor ut reprehenderit.</p>
           <button type='button'
             class="bg-transparent border-2 border-gray-800 mt-12 transition-all font-bold text-sm rounded-md px-6 py-2.5">Get Started</button>

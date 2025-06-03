@@ -1,6 +1,6 @@
 <?php
-include 'Components/header.php';
 include 'Database/config.php';
+include 'Components/header.php';
 
 $users = $conn->prepare("SELECT
     u.UserID,
@@ -30,6 +30,9 @@ $users->bind_result($uid, $Username, $firstname, $surname, $email, $total_commen
           Name
         </th>
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
+          UserName
+        </th>
+        <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
           Email
         </th>
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
@@ -50,8 +53,11 @@ $users->bind_result($uid, $Username, $firstname, $surname, $email, $total_commen
           <td class="p-4 text-[15px] text-slate-900 font-medium">
             <?= $firstname . ' ' . $surname ?>
           </td>
+          <td class="p-4 text-[15px] text-slate-900 font-medium">
+            <?= $Username ?>
+          </td>
           <td class="p-4 text-[15px] text-slate-600 font-medium">
-            <?= $email ?>
+            <?= $UserEmail ?>
           </td>
           <td class="p-4 text-[15px] text-slate-600 font-medium">
             <?= $created ?>

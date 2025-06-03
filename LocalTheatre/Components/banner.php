@@ -11,7 +11,7 @@
         <a href="#" class="flex max-w-full flex-row items-center justify-center rounded-xl border border-solid border-[#1353fe] px-6 py-3 font-semibold text-[#1353fe] [box-shadow:rgb(19,_83,_254)_6px_6px]">
           <img src="https://assets.website-files.com/63904f663019b0d8edf8d57c/63905a575ec39b6784fc687c_Play.svg" alt="" class="mr-2 inline-block w-6" />
           <p class="text-black">View Blogs</p>
-          <a href='<?= ROOT_DIR ?>blog' class='hover:text-[#007bff] text-[#333] block font-semibold text-[15px]'></a>
+          <a href='<?= ROOT_DIR ?>blogs' class='hover:text-[#007bff] text-[#333] block font-semibold text-[15px]'></a>
         </a>
       </div>
     </div>
