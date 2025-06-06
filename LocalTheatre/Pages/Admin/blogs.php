@@ -46,15 +46,15 @@ $comments->bind_result($BlogID,$BlogTitle, $BlogStatus, $BlogCreated); // Bind t
           >
             Delete
           </a>
-          <?php if($status === 'pending') : ?>
-          <a href='publish-blog?bid=<?=$blogId ?>'
+          <?php if($BlogStatus === 'pending') : ?>
+          <a href='publish-blog?bid=<?=$BlogID ?>'
             class="bg-green-600 inline-block rounded-sm bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
           >
             Publish
           </a>
 
           <?php else : ?>
-          <a href='unpublish-blog?bid=<?=$blogId ?>'
+          <a href='unpublish-blog?bid=<?=$BlogID ?>'
             class="bg-red-600 inline-block rounded-sm bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
           >
           unpublish

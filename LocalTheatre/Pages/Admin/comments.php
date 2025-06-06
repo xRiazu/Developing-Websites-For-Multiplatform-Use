@@ -23,7 +23,7 @@ ORDER BY
     END ");
 $comments->execute(); // Execute the query
 $comments->store_result(); // Store the result for later use
-$comments->bind_result($commentId, $comment, $created, $commentStatus, $firstname, $blogName, $blogImg); // Bind the results to variables
+$comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $CommentStatus, $firstname, $blogTitle, $blogImg); // Bind the results to variables
 ?>
 <section class="bg-white">
     <div class="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -45,7 +45,7 @@ $comments->bind_result($commentId, $comment, $created, $commentStatus, $firstnam
 
                         <div>
                             <!-- Display blog title -->
-                            <p class="mt-0.5 text-lg font-medium text-gray-900"><?= htmlspecialchars($blogName) ?></p> <!-- Escape blog name -->
+                            <p class="mt-0.5 text-lg font-medium text-gray-900"><?= htmlspecialchars($blogTitle) ?></p> <!-- Escape blog name -->
                         </div>
                     </div>
 
@@ -59,8 +59,8 @@ $comments->bind_result($commentId, $comment, $created, $commentStatus, $firstnam
                     </div>
 
                     <!-- Display the status of the comment (pending, approved, rejected) with appropriate styling -->
-                    <span class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-emerald-700 <?php if ($commentStatus === 'pending') : ?>bg-yellow-100 <?php elseif ($commentStatus === 'rejected') : ?> bg-red-100 <?php elseif ($commentStatus === 'approved') : ?> bg-emerald-100 <?php endif ?>">
-                        <p class="whitespace-nowrap text-sm"><?= htmlspecialchars($commentStatus) ?></p> <!-- Escape blog status -->
+                    <span class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-emerald-700 <?php if ($CommentStatus === 'pending') : ?>bg-yellow-100 <?php elseif ($commentStatus === 'rejected') : ?> bg-red-100 <?php elseif ($commentStatus === 'approved') : ?> bg-emerald-100 <?php endif ?>">
+                        <p class="whitespace-nowrap text-sm"><?= htmlspecialchars($CommentStatus) ?></p> <!-- Escape blog status -->
                     </span>
 
                     <!-- Display buttons to approve or reject the comment depending on its status -->
@@ -69,24 +69,24 @@ $comments->bind_result($commentId, $comment, $created, $commentStatus, $firstnam
                             <?php if($commentStatus === 'pending') : ?>
                             <!-- Approve and Reject buttons for 'pending' status -->
                              <!-- Use urlencode to escape comment ID in URL -->
-                            <button  onclick="window.location.href='approve?cid=<?= urlencode($commentId) ?>'" 
+                            <button  onclick="window.location.href='approve?cid=<?= urlencode($CommentID) ?>'" 
                                 class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
                                 Approve
                             </button>
 
-                            <button onclick="window.location.href='reject?cid=<?= urlencode($commentId) ?>'"
+                            <button onclick="window.location.href='reject?cid=<?= urlencode($CommentID) ?>'"
                                 class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
                                 Reject
                             </button>
                             <?php elseif($commentStatus === 'rejected') : ?>
                             <!-- Approve button for 'rejected' status -->
-                            <button  onclick="window.location.href='approve?cid=<?= urlencode($commentId) ?>'"
+                            <button  onclick="window.location.href='approve?cid=<?= urlencode($CommentID) ?>'"
                                 class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
                                 Approve
                             </button>
                             <?php elseif($commentStatus === 'approved') : ?>
                             <!-- Reject button for 'approved' status -->
-                            <button onclick="window.location.href='reject?cid=<?= urlencode($commentId) ?>'"
+                            <button onclick="window.location.href='reject?cid=<?= urlencode($CommentID) ?>'"
                                 class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
                                 Reject
                             </button>

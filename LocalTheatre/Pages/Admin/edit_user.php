@@ -8,7 +8,7 @@
     u.firstname,
     u.surname,
     u.UserEmail
-FROM users u
+FROM Users u
 where UserID = $uid
 ");
 $user->execute();               // Execute the query

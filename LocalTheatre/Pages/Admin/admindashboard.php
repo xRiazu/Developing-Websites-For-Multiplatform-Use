@@ -2,20 +2,20 @@
 include 'Database/config.php';
 include 'Components/header.php';
 
-$users = $conn->prepare("SELECT
+$Users = $conn->prepare("SELECT
     u.UserID,
     u.Username,
     u.firstname,
     u.surname,
     u.UserEmail
     COUNT(c.id) AS total_comments
-FROM users u
+FROM Users u
 LEFT JOIN blog_comments c ON c.UserID = u.id
 GROUP BY u.id, u.Username, u.firstname, u.surname, u.created_on, u.email
 ORDER BY u.created_on");
 $users->execute();               // Execute the query
 $users->store_result();          // Store the result
-$users->bind_result($uid, $Username, $firstname, $surname, $email, $total_comments);
+$users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_comments);
 ?>
 <h1>All Users</h1>
 <?php if (isset($_SESSION['status_message'])) : ?>

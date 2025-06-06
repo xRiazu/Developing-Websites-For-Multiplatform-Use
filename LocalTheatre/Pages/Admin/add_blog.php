@@ -1,6 +1,7 @@
 <?php 
     include 'Components/header.php';
     include 'Database/config.php';
+    
     if(!isset($_SESSION['loggedin'])){
          header('Location: login');
     }
