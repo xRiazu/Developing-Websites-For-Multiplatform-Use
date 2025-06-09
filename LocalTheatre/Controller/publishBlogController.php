@@ -1,5 +1,5 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
 
 // Ensure that the cid is sanitized or validated as an integer

@@ -1,12 +1,12 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
 
 // Ensure that the cid is sanitized or validated as an integer
 $cid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
 
     // Prepare the statement with a placeholder
-    $approve = $conn->prepare("UPDATE blog_comments SET status = 'approved' WHERE id = ?");
+    $approve = $conn->prepare("UPDATE blog_comments SET status = 'Approved' WHERE id = ?");
     
     // Bind the parameter (i = integer)
     $approve->bind_param("i", $cid);
