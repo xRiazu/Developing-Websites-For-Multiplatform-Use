@@ -88,7 +88,7 @@ $formattedDate = $date->format("F j, Y, g:i A");
             <p class="mt-2 text-sm text-gray-500">Your comment will appear once approved by admin.</p>
           </form>
         <?php else : ?>
-           <p>Please sign in to comment on this blog</p>
+           <p>Please sign in to comment on this blog, i do not know why this is working please help</p>
             </div>
         <?php endif ?>
             </div>
