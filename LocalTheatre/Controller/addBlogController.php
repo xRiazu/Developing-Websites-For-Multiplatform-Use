@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_FILES["image_url"]["error"] == 0) 
         }
 
         if (move_uploaded_file($_FILES["image_url"]["tmp_name"], $targetFilePath)) {
-            $addBlog = $conn->prepare("INSERT INTO blogs (BlogTitle, BlogContent, BlogAuthorFK, image_url, ShowIDFK) VALUES(?, ?, ?, ?, 1)");
-            $addBlog->bind_param('ssis', $_POST['BlogTitle'], $_POST['BlogContent'], $UserID, $fileName);
+            $addBlog = $conn->prepare("INSERT INTO blog (title, content, author_id, image_url, audio_url, spotify_embed) VALUES(?, ?, ?, ?, ?, ?)");
+            $addBlog->bind_param('ssisss', $_POST['title'], $_POST['content'], $user_id, $fileName, $_POST['audio_url'], $_POST['spotify_embed']);
 
             if ($addBlog->execute()) {
                 $_SESSION['statusMsg'] = "The file " . $fileName . " has been uploaded and blog added successfully.";
