@@ -2,21 +2,40 @@
 include 'Database/config.php';
 include 'Components/header.php';
 
-$Users = $conn->prepare("SELECT
+$users = $conn->prepare("SELECT
     u.UserID,
     u.Username,
     u.firstname,
     u.surname,
-    u.UserEmail
-    COUNT(c.id) AS total_comments
+    u.UserEmail,
+    COUNT(bc.CommentID) AS total_comments
 FROM Users u
-LEFT JOIN blog_comments c ON c.UserID = u.id
-GROUP BY u.id, u.Username, u.firstname, u.surname, u.created_on, u.email
-ORDER BY u.created_on");
+LEFT JOIN blog_comments bc ON bc.UserIDFK = u.UserID
+GROUP BY u.UserID, u.Username, u.firstname, u.surname, u.UserEmail
+");
 $users->execute();               // Execute the query
 $users->store_result();          // Store the result
-$users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_comments);
+$users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total_comments);
 ?>
+
+<div class="bg-yellow-600 py-6 px-8 shadow-md rounded mb-6">
+  <div class="flex justify-between max-w-3xl mx-auto">
+    <a href="blogs"
+      class="flex-1 mx-2 text-center px-6 py-4 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200">
+      Blogs
+    </a>
+    <a href="add_blog"
+      class="flex-1 mx-2 text-center px-6 py-4 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-green-700 transition-all duration-200">
+      + Add Blog
+    </a>
+    <a href="comments"
+      class="flex-1 mx-2 text-center px-6 py-4 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200">
+      Comments
+    </a>
+  </div>
+</div>
+
+
 <h1>All Users</h1>
 <?php if (isset($_SESSION['status_message'])) : ?>
   <div class="status-message"><?= $_SESSION['status_message'] ?></div>
@@ -30,20 +49,25 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_com
           Name
         </th>
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
-          UserName
+          Username
         </th>
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
           Email
         </th>
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
-          Joined At
-        </th>
-        <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
           Total Comments
         </th>
-        <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
-          Actions
-        </th>
+        <td class="p-4">
+  <div class="flex items-center">
+    <button class="mr-3" onclick="window.location.href='Admin/edit_user.php?uid=<?= urlencode($UserID) ?>'" title="Edit">
+      <!-- SVG code for Edit icon here -->
+    </button>
+    <button class="mr-3 modal-show" data-user-id="<?= $UserID ?>" title="Delete">
+      <!-- SVG code for Delete icon here -->
+    </button>
+  </div>
+</td>
+
       </tr>
     </thead>
 
@@ -60,14 +84,11 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_com
             <?= $UserEmail ?>
           </td>
           <td class="p-4 text-[15px] text-slate-600 font-medium">
-            <?= $created ?>
-          </td>
-          <td class="p-4 text-[15px] text-slate-600 font-medium">
             <?= $total_comments ?>
           </td>
           <td class="p-4">
             <div class="flex items-center">
-              <button class="mr-3" onclick="window.location.href='edit-user?uid=<?= urlencode($uid) ?>'"
+              <button class="mr-3" onclick="window.location.href='edit_user?uid=<?= urlencode($UserID) ?>'"
                 title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-blue-500 hover:fill-blue-700"
                   viewBox="0 0 348.882 348.882">
@@ -114,7 +135,7 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_com
       </div>
 
       <div class="my-6">
-        <p class="text-gray-600 text-sm leading-relaxed">Are you sure you want to delete the user with ID <span id="modal_user_id"><?= $uid ?></span> this will also remove all comments made by user.</p>
+      <p>Are you sure you want to delete the user with ID <span id="modal_user_id"></span>? This will also remove all comments made by the user.</p>
       </div>
 
       <div class="border-t border-gray-300 pt-6 flex justify-end gap-4">
@@ -128,18 +149,16 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $email, $total_com
 </div>
 <script>
   document.querySelectorAll('.modal-show').forEach(button => {
-    button.addEventListener("click", function() {
-      const userId = this.getAttribute('data-user-id'); // Get the user ID
-      document.getElementById('modal').classList.remove('hidden');
+  button.addEventListener("click", function() {
+    const UserID = this.getAttribute('data-user-id');
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('modal_user_id').textContent = UserID;
 
-      // Optionally update the modal content with the user ID
-      document.getElementById('modal_user_id').textContent = userId;
-    });
+    // Set the delete button link dynamically
+    const deleteBtn = document.querySelector('#modal button[onclick^="window.location.href"]');
+    deleteBtn.setAttribute('onclick', `window.location.href='Controller/userDeleteController.php?uid=${UserID}'`);
   });
+});
 
-  // Close button functionality
-  document.getElementById('close').addEventListener("click", function() {
-    document.getElementById('modal').classList.add('hidden');
-  });
 </script>
 <?php include 'Components/footer.php' ?>

@@ -1,41 +1,45 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
 
-// Validate and sanitise GET parameters
-if (!isset($_GET['bid']) || !isset($_GET['uid'])) {
+// Validate and sanitize GET parameters
+if (!isset($_GET['BlogID']) || !isset($_GET['UserID'])) {
     $_SESSION['status_message'] = "Invalid request.";
     header("Location: blogInfo");
     exit();
 }
-// cast to integer cleans the input into a number and ignores anything that isn't a number.
-$BlogID = (int) $_GET['bid']; // Cast to integer
-$UserID = (int) $_GET['uid']; // Cast to integer
 
-// Validate and sanitise POST content
+$BlogID = (int) $_GET['BlogID'];
+$UserID = (int) $_GET['UserID'];
+
+// Validate and sanitize POST content
 if (!isset($_POST['content']) || empty(trim($_POST['content']))) {
     $_SESSION['status_message'] = "Comment cannot be empty.";
     header("Location: blogInfo?bid=" . $BlogID);
     exit();
 }
 
-$content = trim($_POST['content']);
+$CommentTitle = trim($_POST['content']);
 
 // Further check content length
-if (strlen($content) < 5 || strlen($content) > 500) {
+if (strlen($CommentTitle) < 5 || strlen($CommentTitle) > 500) {
     $_SESSION['status_message'] = "Comment must be between 5 and 500 characters.";
     header("Location: blogInfo?bid=" . $BlogID);
     exit();
 }
-// Prepare and execute statement
-// Using prepared statements will help prevent sql injection
-$insertComment = $conn->prepare("INSERT INTO blog_comments (content, BlogID, UserID) VALUES (?, ?, ?)");
+
+// Prepare and execute insert
+$insertComment = $conn->prepare("
+    INSERT INTO blog_comments 
+    (CommentTitle, CommentBlogIDFK, CommentUserIDFK, CommentStatus, CommentCreated) 
+    VALUES (?, ?, ?, 'Pending', NOW())
+");
 
 if ($insertComment) {
-    $insertComment->bind_param("sii", $content, $BlogID, $UserID);
+    $insertComment->bind_param("sii", $CommentTitle, $BlogID, $UserID);
 
     if ($insertComment->execute()) {
-        $_SESSION['status_message'] = "Comment added successfully!";
+        $_SESSION['status_message'] = "Comment added successfully and is awaiting approval.";
     } else {
         $_SESSION['status_message'] = "Error executing query: " . $conn->error;
     }
@@ -45,7 +49,7 @@ if ($insertComment) {
     $_SESSION['status_message'] = "Error preparing query: " . $conn->error;
 }
 
-// Redirect back to the blog page
+// Redirect back to blog
 header("Location: blogInfo?bid=" . $BlogID);
 exit();
 ?>

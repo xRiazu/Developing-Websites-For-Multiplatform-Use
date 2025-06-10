@@ -1,15 +1,15 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
 
 // Ensure that the cid is sanitized or validated as an integer
-$uid = isset($_GET['uid']) ? (int) $_GET['uid'] : 0;
+$UserID = isset($_GET['UserID']) ? (int) $_GET['UserID'] : 0;
     $delete_comment = $conn->prepare("DELETE 
     FROM blog_comments
-    WHERE user_id = ?");
+    WHERE UserID = ?");
     
     // Bind the parameter (i = integer)
-    $delete_comment->bind_param("i", $uid);
+    $delete_comment->bind_param("i", $UserID);
     
     // Execute the query
     if ($delete_comment->execute()) {
@@ -23,10 +23,10 @@ $uid = isset($_GET['uid']) ? (int) $_GET['uid'] : 0;
     // Prepare the statement with a placeholder
     $delete_user = $conn->prepare("DELETE 
     FROM users
-    WHERE id = ?");
+    WHERE UserID = ?");
     
     // Bind the parameter (i = integer)
-    $delete_user->bind_param("i", $uid);
+    $delete_user->bind_param("i", $UserID);
     
     // Execute the query
     if ($delete_user->execute()) {

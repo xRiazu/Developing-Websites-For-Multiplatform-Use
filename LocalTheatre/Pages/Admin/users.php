@@ -7,13 +7,13 @@
     u.Username,
     u.firstname,
     u.surname,
-    u.email
+    u.UserEmail
 FROM users u
 where UserID = $uid
 ");
 $users->execute();               // Execute the query
 $users->store_result();          // Store the result
-$users->bind_result($Username, $firstname, $surname, $email);
+$users->bind_result($Username, $firstname, $surname, $UserEmail);
 $users->fetch();
 ?>
     <h1>Edit Users</h1>
@@ -27,7 +27,7 @@ $users->fetch();
 
       <input type="text" name="surname" value="<?= $surname ?>"
         class="px-4 py-3 bg-gray-100 w-full text-sm outline-none border-b-2 border-transparent focus:border-blue-500 rounded" />
-        <input type="text" name="email" value="<?= $email ?>"
+        <input type="text" name="email" value="<?= $UserEmail ?>"
         class="px-4 py-3 bg-gray-100 w-full text-sm outline-none border-b-2 border-transparent focus:border-blue-500 rounded" />
      
 

@@ -9,15 +9,16 @@ if (!isset($_SESSION['UserID'])) {
 
 $userID = $_SESSION['UserID'];
 
-$Users = $conn->prepare("SELECT
+$users = $conn->prepare("SELECT
     u.Username,
     bc.CommentTitle,
-    bc.CommentCreated.
+    bc.CommentCreated,
     bc.CommentStatus,
     b.BlogTitle
     FROM blog_comments bc
-    JOIN blog b ON bc.CommentBlogIDFK = b.BlogID
-    WHERE bc.UserIDKFK = ?
+    JOIN users u ON bc.CommentBlogIDFK = u.UserID
+    JOIN blogs b ON bc.CommentBlogIDFK = b.BlogID
+    WHERE bc.UserIDFK = ?
     ");
     $users->execute();               // Execute the query
     $users->store_result();          // Store the result
@@ -34,7 +35,6 @@ $Users = $conn->prepare("SELECT
                 <table class="min-w-full text-sm text-left border border-gray-200">
                     <thead class="bg-gray-50 text-gray-600">
                         <tr>
-                            <th class="px-4 py-2 border-b">Username</th>
                             <th class="px-4 py-2 border-b">Blog Title</th>
                             <th class="px-4 py-2 border-b">Comment</th>
                             <th class="px-4 py-2 border-b">Created At</th>

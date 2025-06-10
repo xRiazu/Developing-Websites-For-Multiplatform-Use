@@ -36,7 +36,7 @@ if ($stmt = $conn->prepare('SELECT UserID, UserPassword, UserRole FROM users WHE
             setcookie("UserEmail", $_POST['UserEmail'], time() + 86400, "/", "", true, true);
 
             // Redirect based on user type (admin or regular user)
-            if ($role == 'Admin') {
+            if ($UserRole == 'Admin') {
                 header('Location: Admin/admindashboard');
             } else {
                 header('Location: user/dashboard');

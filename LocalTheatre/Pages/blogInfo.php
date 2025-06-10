@@ -23,7 +23,7 @@ $blogs->bind_result( $BlogTitle, $BlogContent, $BlogStatus, $BlogCreated, $BlogI
 $blogs->fetch();
 
 // blog comments //
-$BlogComments = $conn->prepare("SELECT
+$blog_comments = $conn->prepare("SELECT
 bc.CommentTitle,
 bc.CommentCreated,
 bc.CommentStatus,
@@ -33,12 +33,13 @@ u.surname,
 u.Username
 
 FROM blog_comments bc
-INNER JOIN users u ON bc.CommentID = u.UserID
-WHERE bc.CommentID = $BlogID AND bc.CommentStatus = 'Approved'
+INNER JOIN users u ON bc.UserIDFK = u.UserID
+WHERE bc.CommentID = ? AND bc.CommentStatus = 'Approved'
 ");
-$BlogComments->execute();
-$BlogComments->store_result();
-$BlogComments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $BlogComment, $firstname, $surname, $username);
+$blog_comments->bind_param("i", $BlogID);
+$blog_comments->execute();
+$blog_comments->store_result();
+$blog_comments->bind_result($CommentTitle, $CommentCreated, $CommentStatus, $BlogComment, $firstname, $surname, $username);
 
 
 $date = new DateTime($BlogCreated);
@@ -72,60 +73,67 @@ $formattedDate = $date->format("F j, Y, g:i A");
                       </div>
                   </div>
               </div>
-              <?php if(isset($_SESSION['id'])) : ?>
+              <?php if(isset($_SESSION['UserID'])) : ?>
               <div class="mt-20">
-                <form id="commentForm" action="commentControllerSanitise?bid=<?= $BlogID ?>&uid=<?=$UserID?>" method="post">
-                <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Comment on <?= $BlogTitle ?></label>
-                  <textarea id="comment" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your comment..."></textarea>
-                  <button type="submit" class="relative inline cursor-pointer text-xl font-medium before:bg-violet-600  before:absolute before:-bottom-1 before:block before:h-[2px] before:w-full before:origin-bottom-right before:scale-x-0 before:transition before:duration-300 before:ease-in-out hover:before:origin-bottom-left hover:before:scale-x-100">Submit Comment</button>
-                  <p class="mt-5">Your comment will appear once approved by admin</p>
-                </form>
-                <?php else : ?>
-                  <p>Please sign in to comment on this blog</p>
+          <form id="commentForm" action="commentControllerSanitise.php?BlogID=<?= $BlogID ?>&UserID=<?= $UserID ?>" method="post">
+            <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+              Leave a Comment! <?= $BlogTitle ?>
+            </label>
+            <textarea id="comment" name="CommentTitle" rows="4"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Your comment..."></textarea>
+            <button type="submit" class="mt-2 text-white bg-violet-600 px-4 py-2 rounded hover:bg-violet-700">
+              Submit Comment
+            </button>
+            <p class="mt-2 text-sm text-gray-500">Your comment will appear once approved by admin.</p>
+          </form>
+        <?php else : ?>
+           <p>Please sign in to comment on this blog</p>
+            </div>
+        <?php endif ?>
+            </div>
+          </div>
+        </div>
+
+    <div class="flex justify-center relative top-1/3">
+  <?php if ($blog_comments->num_rows == 0) : ?>
+    <p class="mt-20">No comments have been left yet.</p>
+  <?php else : ?>
+    <?php while($blog_comments->fetch()) : ?>
+      <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
+          <div class="relative flex gap-4">
+              <img src="https://icons.iconarchive.com/icons/diversity-avatars/avatars/256/charlie-chaplin-icon.png" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
+              <div class="flex flex-col w-full">
+                  <div class="flex flex-row justify-between">
+                      <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><?= htmlspecialchars($firstname) . ' ' . htmlspecialchars($surname) ?></p>
+                  </div>
+                  <p class="text-gray-400 text-sm"><?= htmlspecialchars($CommentCreated) ?></p>
               </div>
-              <?php endif ?>
-            </div>
-        </div>
-        
-    </div>
-<div class="flex justify-center relative top-1/3">
-    
-  <?php while($BlogComments->fetch()) : ?>
-    <?php if ($BlogComments->num_rows == 0) : ?>
-      <p class="mt-20">No comments have been left yet </p>
-    <?php else : ?>
-<div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
-    <div class="relative flex gap-4">
-        <img src="https://icons.iconarchive.com/icons/diversity-avatars/avatars/256/charlie-chaplin-icon.png" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
-        <div class="flex flex-col w-full">
-            <div class="flex flex-row justify-between">
-                <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><?= $firstname ?></p>
-                <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
-            </div>
-            <p class="text-gray-400 text-sm"><?= $CommentCreated ?></p>
-        </div>
-    </div>
-    <p class="-mt-4 text-gray-500"><?= htmlspecialchars($CommentCreated) ?></p>
+          </div>
+          <p class="-mt-4 text-gray-500"><?= htmlspecialchars($CommentTitle) ?></p>
+      </div>
+    <?php endwhile ?>
+  <?php endif ?>
 </div>
-<?php endif ?>
-<?php endwhile ?>
+
 </div>
 </section>
 <script>
-document.getElementById('commentForm').addEventListener('submit', function(event) {
-  const comment = document.getElementById('comment').value.trim();
-
-  // Basic checks
-  if (comment.length < 5) {
-    alert('Comment must be at least 5 characters long.');
-    event.preventDefault();
-  }
-  if (comment.length > 500) {
-    alert('Comment cannot be longer than 500 characters.');
-    event.preventDefault();
-  }
-});
+if (document.getElementById('commentForm')) {
+  document.getElementById('commentForm').addEventListener('submit', function(event) {
+    const comment = document.getElementById('comment').value.trim();
+    if (comment.length < 5) {
+      alert('Comment must be at least 5 characters long.');
+      event.preventDefault();
+    }
+    if (comment.length > 500) {
+      alert('Comment cannot be longer than 500 characters.');
+      event.preventDefault();
+    }
+  });
+}
 </script>
+
 <?php
 include 'Components/footer.php';
 ?>

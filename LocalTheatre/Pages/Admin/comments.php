@@ -1,29 +1,29 @@
-<?php
+<?php 
 // Include database configuration and header
 include 'Database/config.php';
 include 'Components/header.php';
 
 // Prepare the SQL query to fetch comments along with blog and user data
-$comments = $conn->prepare("SELECT
-c.CommentID,
-c.CommentTitle,
-c.CommentCreated,
-c.CommentStatus,
+$blog_comments = $conn->prepare("SELECT
+bc.CommentID,
+bc.CommentTitle,
+bc.CommentCreated,
+bc.CommentStatus,
 u.Username,
 b.BlogTitle,
 b.image_url
-FROM blog_comments c
-INNER JOIN users u ON c.UserID = u.id
-INNER JOIN blogs b ON c.BlogID = b.id
+FROM blog_comments bc
+INNER JOIN users u ON bc.UserIDFK = u.UserID
+INNER JOIN blogs b ON bc.CommentBlogIDFK = b.BlogID
 ORDER BY 
     CASE 
-        WHEN c.CommentStatus = 'pending' THEN 1 
-        WHEN c.CommentStatus = 'approved' THEN 2 
-        WHEN c.CommentStatus = 'rejected' THEN 3 
+        WHEN bc.CommentStatus = 'pending' THEN 1 
+        WHEN bc.CommentStatus = 'approved' THEN 2 
+        WHEN bc.CommentStatus = 'rejected' THEN 3 
     END ");
-$comments->execute(); // Execute the query
-$comments->store_result(); // Store the result for later use
-$comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $CommentStatus, $firstname, $blogTitle, $blogImg); // Bind the results to variables
+$blog_comments->execute(); // Execute the query
+$blog_comments->store_result(); // Store the result for later use
+$blog_comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $CommentStatus, $firstname, $BlogTitle, $BlogImg); // Bind the results to variables
 ?>
 <section class="bg-white">
     <div class="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -34,24 +34,24 @@ $comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $CommentStatu
 
         <div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
             <!-- Loop through each comment -->
-            <?php while ($comments->fetch()) : ?>
+            <?php while ($blog_comments->fetch()) : ?>
                 <blockquote class="rounded-lg bg-gray-50 p-6 shadow-xs sm:p-8">
                     <div class="flex items-center gap-4">
                         <!-- Display blog image -->
                         <img
                             alt=""
-                            src="<?= ROOT_DIR ?>assets/images/<?= htmlspecialchars($blogImg) ?>"
+                            src="<?= ROOT_DIR ?>Assets/shows/<?= htmlspecialchars($BlogImg) ?>"
                             class="size-14 rounded-full object-cover" />
 
                         <div>
                             <!-- Display blog title -->
-                            <p class="mt-0.5 text-lg font-medium text-gray-900"><?= htmlspecialchars($blogTitle) ?></p> <!-- Escape blog name -->
+                            <p class="mt-0.5 text-lg font-medium text-gray-900"><?= htmlspecialchars($BlogTitle) ?></p> <!-- Escape blog name -->
                         </div>
                     </div>
 
                     <!-- Display the comment content -->
                     <p class="mt-4 text-gray-700">
-                        <?= htmlspecialchars($comment) ?> <!-- Escape comment content -->
+                        <?= htmlspecialchars($CommentCreated) ?> <!-- Escape comment content -->
                     </p>
                     <div>
                         <!-- Display the first name of the commenter -->
@@ -66,31 +66,19 @@ $comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $CommentStatu
                     <!-- Display buttons to approve or reject the comment depending on its status -->
                     <div>
                         <span class="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-xs">
-                            <?php if($commentStatus === 'pending') : ?>
-                            <!-- Approve and Reject buttons for 'pending' status -->
-                             <!-- Use urlencode to escape comment ID in URL -->
-                            <button  onclick="window.location.href='approve?cid=<?= urlencode($CommentID) ?>'" 
-                                class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
-                                Approve
-                            </button>
-
-                            <button onclick="window.location.href='reject?cid=<?= urlencode($CommentID) ?>'"
-                                class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
-                                Reject
-                            </button>
-                            <?php elseif($commentStatus === 'rejected') : ?>
-                            <!-- Approve button for 'rejected' status -->
-                            <button  onclick="window.location.href='approve?cid=<?= urlencode($CommentID) ?>'"
-                                class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
-                                Approve
-                            </button>
-                            <?php elseif($commentStatus === 'approved') : ?>
-                            <!-- Reject button for 'approved' status -->
-                            <button onclick="window.location.href='reject?cid=<?= urlencode($CommentID) ?>'"
-                                class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
-                                Reject
-                            </button>
-                            <?php endif ?>
+                           <?php if($CommentStatus === 'Pending' && 'Rejected') : ?>
+                            <a href='approve?CommentID=<?= $CommentID ?>'
+                                class="inline-block rounded-sm bg-green-600 px-4 py-2 text-xs font-medium text-white hover:bg-green-700"
+                                onclick="return confirm('Approve this Comment?')">
+                            Approve
+                            </a>
+                           <?php else : ?>
+                            <a href='reject?CommentID=<?= $CommentID ?>'
+                                class="inline-block rounded-sm bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-700"
+                                onclick="return confirm('Reject this Comment?')">
+                            Reject
+                            </a>
+                            <?php endif; ?>
                         </span>
                     </div>
                 </blockquote>

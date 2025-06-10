@@ -5,35 +5,35 @@ ini_set('display_errors', 1);
 $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
 // Define available routes (URL => corresponding PHP file)
 $routes = [
-    '' => 'pages/home.php',          // Home route
-    'home' => 'pages/home.php',          // Home route
-    'contact' => 'pages/contact.php',          // contact route
-    'register' => 'pages/register.php',    // register page route
-    'login' => 'pages/login.php', // login page route
-    'blog' => 'pages/blog.php', // blog page route
-    'blogInfo' => 'pages/bloginfo.php', // blog page route
-    'user/dashboard' => 'pages/user/dashboard.php', // user page route
+    '' => 'Pages/home.php',          // Home route
+    'home' => 'Pages/home.php',          // Home route
+    'contact' => 'Pages/contact.php',          // contact route
+    'register' => 'Pages/register.php',    // register page route
+    'login' => 'Pages/login.php', // login page route
+    'blog' => 'Pages/blog.php', // blog page route
+    'blogInfo' => 'Pages/bloginfo.php', // blog page route
+    'user/dashboard' => 'Pages/user/dashboard.php', // user page route
 
     // admin dashboard
-    'admin/admindashboard' => 'pages/admin/admindashboard.php', // admin page route
-    'admin/comments' => 'pages/admin/comments.php', // comments page route
-    'admin/blogs' => 'pages/admin/blogs.php', // blog table route
-    'admin/edit_user' => 'pages/admin/edit_user.php', // edit user page route
-    'admin/add_blog' => 'pages/admin/add_blog.php', // add blog page route
+    'Admin/admindashboard' => 'Pages/Admin/admindashboard.php', // admin page route
+    'Admin/comments' => 'Pages/Admin/comments.php', // comments page route
+    'Admin/blogs' => 'Pages/Admin/blogs.php', // blog table route
+    'Admin/edit_user' => 'Pages/Admin/edit_user.php', // edit user page route
+    'Admin/add_blog' => 'Pages/Admin/add_blog.php', // add blog page route
 
     // configuration files
-    'registerController' => 'controller/registerController.php',
-    'loginController' => 'controller/loginController.php',
-    'logout' => 'controller/logoutController.php',
-    'commentController' => 'controller/commentController.php',
-    'commentControllerSanitise' => 'controller/commentControllerSanitise.php',
-    'admin/approve' => 'controller/approveController.php', // admin page route
-    'admin/reject' => 'controller/rejectController.php', // admin page route
-    'admin/edit' => 'controller/userEditController.php', // admin page route
-    'admin/delete-user' => 'controller/userDeleteController.php', // admin page route
-    'admin/upload-blog' => 'controller/addBlogController.php', // admin page route
-    'admin/publish-blog' => 'controller/publishBlogController.php', // admin page route
-    'admin/unpublish-blog' => 'controller/unpublishBlogController.php', // admin page route
+    'registerController' => 'Controller/registerController.php',
+    'loginController' => 'Controller/loginController.php',
+    'logout' => 'Controller/logoutController.php',
+    'commentController' => 'Controller/commentController.php',
+    'commentControllerSanitise' => 'Controller/commentControllerSanitise.php',
+    'Admin/approve' => 'Controller/approveController.php', // admin page route
+    'Admin/reject' => 'Controller/rejectController.php', // admin page route
+    'Admin/edit' => 'Controller/userEditController.php', // admin page route
+    'Admin/delete-user' => 'Controller/userDeleteController.php', // admin page route
+    'Admin/upload-blog' => 'Controller/addBlogController.php', // admin page route
+    'Admin/publish-blog' => 'Controller/publishBlogController.php', // admin page route
+    'Admin/unpublish-blog' => 'Controller/unpublishBlogController.php', // admin page route
 ];
 
 // Check if the URL matches a route

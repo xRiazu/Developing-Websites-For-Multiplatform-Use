@@ -11,7 +11,7 @@ BlogCreated,
 image_url
 
 FROM blogs where BlogStatus = 'Approved'
-LIMIT 3");
+");
 $blogs->execute();
 $blogs->store_result();
 $blogs->bind_result($BlogID, $BlogTitle, $BlogContent, $BlogStatus, $BlogCreated, $BlogImg);

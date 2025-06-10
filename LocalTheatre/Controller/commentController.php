@@ -1,13 +1,13 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
-$BlogID = $_GET['bid'];
-$UserID = $_GET['uid'];
+$BlogID = $_GET['BlogID'];
+$UserID = $_GET['UserID'];
 
-$insertComment = $conn->prepare("INSERT INTO blog_comments (content, BlogID, UserID) VALUES (?, ?, ?)");
+$insertComment = $conn->prepare("INSERT INTO blog_comments (CommentCreated, BlogID, UserID) VALUES (?, ?, ?)");
 
 // Bind parameters to prevent SQL injection
-$insertComment->bind_param("sii", $_POST['content'], $BlogID, $UserID);
+$insertComment->bind_param("sii", $_POST['CommentCreated'], $BlogID, $UserID);
 
 // Execute the query
 if ($insertComment->execute()) {

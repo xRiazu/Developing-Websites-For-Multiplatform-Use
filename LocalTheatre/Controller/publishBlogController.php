@@ -1,15 +1,15 @@
 <?php
-include 'database/config.php';
+include 'Database/config.php';
 session_start();
 
 // Ensure that the cid is sanitized or validated as an integer
-$bid = isset($_GET['bid']) ? (int) $_GET['bid'] : 0;
+$BlogID = isset($_GET['BlogID']) ? (int) $_GET['BlogID'] : 0;
 
     // Prepare the statement with a placeholder
-    $approve = $conn->prepare("UPDATE blog SET status = 'published' WHERE id = ?");
+    $approve = $conn->prepare("UPDATE blogs SET BlogStatus = 'Approved' WHERE BlogID = ?");
     
     // Bind the parameter (i = integer)
-    $approve->bind_param("i", $bid);
+    $approve->bind_param("i", $BlogID);
     
     // Execute the query
     if ($approve->execute()) {
