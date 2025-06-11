@@ -15,7 +15,7 @@
     <?php endif ?>
 <h2 class="header text-xl font-semibold text-gray-700 text-center"> Add a new blog </h2>
 <section class="uploadVinyl bg-white shadow-md rounded-lg p-6 mt-4">
-    <form action="<?= ROOT_DIR ?>admin/upload-blog" method="post" enctype="multipart/form-data" class="space-y-4">
+    <form action="<?= ROOT_DIR ?>Admin/upload-blog" method="post" enctype="multipart/form-data" class="space-y-4">
         <label for="image_url" class="block text-gray-600">Select Blog Image</label>
         <input type="file" name="image_url" id="image_url" class="block w-full border rounded p-2">
        

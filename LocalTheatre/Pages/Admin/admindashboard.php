@@ -9,7 +9,7 @@ $users = $conn->prepare("SELECT
     u.surname,
     u.UserEmail,
     COUNT(bc.CommentID) AS total_comments
-FROM Users u
+FROM users u
 LEFT JOIN blog_comments bc ON bc.UserIDFK = u.UserID
 GROUP BY u.UserID, u.Username, u.firstname, u.surname, u.UserEmail
 ");

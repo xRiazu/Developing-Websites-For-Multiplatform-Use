@@ -48,7 +48,7 @@ $users = $conn->prepare("SELECT
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
-                        <?php foreach ($comments as $comment): ?>
+                        <?php foreach($total_comments as $total_comments): ?>
                             <tr>
                                 <td class="px-4 py-2"><?= htmlspecialchars($Username['Username']) ?></td>
                                 <td class="px-4 py-2"><?= htmlspecialchars($BlogTitle['BlogTitle']) ?></td>
@@ -75,4 +75,4 @@ $users = $conn->prepare("SELECT
     </div>
 </div>
 
-<?php include 'components/footer.php' ?>
+<?php include 'Components/footer.php' ?>

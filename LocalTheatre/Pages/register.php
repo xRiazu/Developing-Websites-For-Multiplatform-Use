@@ -94,5 +94,5 @@ include 'Components/header.php';
       </div>
     </div>
 <?php
-include 'components/footer.php';
+include 'Components/footer.php';
 ?>
