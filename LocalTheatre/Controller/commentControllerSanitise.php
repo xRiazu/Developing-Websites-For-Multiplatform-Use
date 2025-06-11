@@ -10,19 +10,20 @@ if (!isset($_GET['BlogID']) || !isset($_GET['UserID'])) {
 }
 
 $BlogID = (int) $_GET['BlogID'];
-$UserID = (int) $_GET['UserID'];
+$UserID = (int) $_SESSION['UserID'];
+
 
 // Validate and sanitize POST content
-if (!isset($_POST['content']) || empty(trim($_POST['content']))) {
+if (!isset($_POST['CommentCreated'])) {
     $_SESSION['status_message'] = "Comment cannot be empty.";
     header("Location: blogInfo?bid=" . $BlogID);
     exit();
 }
 
-$CommentTitle = trim($_POST['content']);
+$CommentCreated = trim($_POST['CommentCreated']);
 
 // Further check content length
-if (strlen($CommentTitle) < 5 || strlen($CommentTitle) > 500) {
+if (strlen($CommentCreated) < 5 || strlen($CommentCreated) > 500) {
     $_SESSION['status_message'] = "Comment must be between 5 and 500 characters.";
     header("Location: blogInfo?bid=" . $BlogID);
     exit();
@@ -31,12 +32,12 @@ if (strlen($CommentTitle) < 5 || strlen($CommentTitle) > 500) {
 // Prepare and execute insert
 $insertComment = $conn->prepare("
     INSERT INTO blog_comments 
-    (CommentTitle, CommentBlogIDFK, CommentUserIDFK, CommentStatus, CommentCreated) 
-    VALUES (?, ?, ?, 'Pending', NOW())
+    (CommentBlogIDFK, UserIDFK, CommentCreated) 
+    VALUES (?, ?, ?)
 ");
 
 if ($insertComment) {
-    $insertComment->bind_param("sii", $CommentTitle, $BlogID, $UserID);
+    $insertComment->bind_param("iis", $BlogID, $UserID, $CommentCreated);
 
     if ($insertComment->execute()) {
         $_SESSION['status_message'] = "Comment added successfully and is awaiting approval.";

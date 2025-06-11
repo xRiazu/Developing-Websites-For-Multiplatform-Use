@@ -75,11 +75,11 @@ $formattedDate = $date->format("F j, Y, g:i A");
               </div>
               <?php if(isset($_SESSION['UserID'])) : ?>
               <div class="mt-20">
-          <form id="commentForm" action="commentControllerSanitise.php?BlogID=<?= $BlogID ?>&UserID=<?= $UserID ?>" method="post">
+          <form id="commentForm" action="commentControllerSanitise?BlogID=<?= $BlogID ?>&UserID=<?= $UserID ?>" method="post">
             <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
               Leave a Comment! <?= $BlogTitle ?>
             </label>
-            <textarea id="comment" name="CommentTitle" rows="4"
+            <textarea id="comment" name="CommentCreated" rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Your comment..."></textarea>
             <button type="submit" class="mt-2 text-white bg-violet-600 px-4 py-2 rounded hover:bg-violet-700">

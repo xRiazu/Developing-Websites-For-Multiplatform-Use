@@ -13,7 +13,7 @@ $CommentID = isset($_GET['CommentID']) ? (int) $_GET['CommentID'] : 0;
     
     // Execute the query
     if ($approve->execute()) {
-        $_SESSION['status_message'] = "Approved successfully!";
+        $_SESSION['status_message'] = "Rejected  successfully!";
     } else {
         $_SESSION['status_message'] = "Error: " . $conn->error;
     }

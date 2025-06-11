@@ -66,28 +66,29 @@ $blog_comments->bind_result($CommentID, $CommentTitle, $CommentCreated, $Comment
                     <!-- Display buttons to approve or reject the comment depending on its status -->
                     <div>
                         <span class="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-xs">
-                           <?php if($CommentStatus === 'Pending' && 'Rejected') : ?>
-                            <a href='approve?CommentID=<?= $CommentID ?>'
-                                class="inline-block rounded-sm bg-green-600 px-4 py-2 text-xs font-medium text-white hover:bg-green-700"
-                                onclick="return confirm('Approve this Comment?')">
-                            Approve
-                            </a>
-                           <?php else : ?>
-                            <a href='reject?CommentID=<?= $CommentID ?>'
-                                class="inline-block rounded-sm bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-700"
-                                onclick="return confirm('Reject this Comment?')">
-                            Reject
-                            </a>
-                            <?php endif; ?>
-                        </span>
-                    </div>
-                </blockquote>
-            <?php endwhile ?>
-
-        </div>
+                        <?php if($CommentStatus === 'Pending') : ?>
+                        <a href='approve?CommentID=<?= $CommentID ?>'
+                        class="inline-block rounded-sm bg-green-600 px-4 py-2 text-xs font-medium text-white hover:bg-green-700"
+                        onclick="return confirm('Approve this Comment?')">
+                        Approve
+                    </a>
+                    <a href='reject?CommentID=<?= $CommentID ?>'
+                        class="inline-block rounded-sm bg-red-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-700"
+                        onclick="return confirm('Reject this Comment?')">
+                        Reject
+                    </a>
+                <?php elseif ($CommentStatus === 'Approved') : ?>
+                    <span class="text-green-600 font-semibold">Approved</span>
+                <?php elseif ($CommentStatus === 'Rejected') : ?>
+                    <span class="text-red-600 font-semibold">Rejected</span>
+                <?php endif; ?>
+                    </span>
+                </div>
+            </blockquote>
+        <?php endwhile ?>
     </div>
+</div>
 </section>
-
 <?php
 // Include the footer
 include 'Components/footer.php';

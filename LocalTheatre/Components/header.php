@@ -1,5 +1,5 @@
 <?php
-define('ROOT_DIR', '/Developing-Websites-For-Multiplatform-Use-1/LocalTheatre/');
+define('ROOT_DIR', '/Developing-Websites-For-Multiplatform-Use/LocalTheatre/');
 session_start();
 ?>
 

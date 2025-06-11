@@ -12,7 +12,7 @@ if (empty($_POST['UserEmail']) || empty($_POST['UserPassword'])) {
 }
 
 // Prepare SQL statement to prevent SQL injection
-if ($stmt = $conn->prepare('SELECT UserID, UserPassword, UserRole FROM users WHERE UserEmail = ?')) {
+if ($stmt = $conn->prepare('SELECT UserID, UserPassword, Username, UserRole FROM users WHERE UserEmail = ?')) {
     // Bind the input parameter (email) and execute the statement
     $stmt->bind_param('s', $_POST['UserEmail']);
     $stmt->execute();
@@ -20,7 +20,7 @@ if ($stmt = $conn->prepare('SELECT UserID, UserPassword, UserRole FROM users WHE
     
     // Check if the email exists
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($UserID, $UserPassword, $UserRole);
+        $stmt->bind_result($UserID, $UserPassword, $user_name, $UserRole);
         $stmt->fetch();
         
         // Verify the password using password_verify
@@ -28,7 +28,7 @@ if ($stmt = $conn->prepare('SELECT UserID, UserPassword, UserRole FROM users WHE
             // Password is correct, start user session
             session_regenerate_id();
             $_SESSION['loggedin'] = true;
-            $_SESSION['Username'] = $_POST['UserEmail'];
+            $_SESSION['Username'] = $user_name;
             $_SESSION['UserID'] = $UserID;
             $_SESSION['UserRole'] = $UserRole;
 

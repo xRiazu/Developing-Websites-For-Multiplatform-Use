@@ -35,7 +35,6 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total
   </div>
 </div>
 
-
 <h1>All Users</h1>
 <?php if (isset($_SESSION['status_message'])) : ?>
   <div class="status-message"><?= $_SESSION['status_message'] ?></div>
@@ -57,17 +56,7 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total
         <th class="p-4 text-left text-[13px] font-semibold text-slate-900">
           Total Comments
         </th>
-        <td class="p-4">
-  <div class="flex items-center">
-    <button class="mr-3" onclick="window.location.href='Admin/edit_user.php?uid=<?= urlencode($UserID) ?>'" title="Edit">
-      <!-- SVG code for Edit icon here -->
-    </button>
-    <button class="mr-3 modal-show" data-user-id="<?= $UserID ?>" title="Delete">
-      <!-- SVG code for Delete icon here -->
-    </button>
-  </div>
-</td>
-
+        <th class="p-4">Actions</th>
       </tr>
     </thead>
 
@@ -75,13 +64,13 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total
       <?php while ($users->fetch()) : ?>
         <tr class="hover:bg-gray-50">
           <td class="p-4 text-[15px] text-slate-900 font-medium">
-            <?= $firstname . ' ' . $surname ?>
+            <?= htmlspecialchars($firstname . ' ' . $surname) ?>
           </td>
           <td class="p-4 text-[15px] text-slate-900 font-medium">
-            <?= $Username ?>
+            <?= htmlspecialchars($Username) ?>
           </td>
           <td class="p-4 text-[15px] text-slate-600 font-medium">
-            <?= $UserEmail ?>
+            <?= htmlspecialchars($UserEmail) ?>
           </td>
           <td class="p-4 text-[15px] text-slate-600 font-medium">
             <?= $total_comments ?>
@@ -100,8 +89,10 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total
                     data-original="#000000" />
                 </svg>
               </button>
+
+              <!-- Delete button updated with correct data-user-id -->
               <button class="mr-3 modal-show"
-                data-user-id="<?= $uid ?>"
+                data-user-id="<?= $UserID ?>"
                 title="Delete">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                   <path
@@ -118,47 +109,50 @@ $users->bind_result($UserID, $Username, $firstname, $surname, $UserEmail, $total
       <?php endwhile ?>
     </tbody>
   </table>
+
   <!-- ***********  popup   **************-->
   <div id="modal" class="hidden fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
     <div class=" w-full max-w-lg bg-white shadow-lg rounded-lg p-6 relative">
       <div class="flex items-center pb-3 border-b border-gray-300">
         <h3 class="text-gray-800 text-xl font-bold flex-1">Delete?</h3>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 ml-2 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-500"
-          viewBox="0 0 320.591 320.591">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 ml-2 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-600 transition-colors duration-150" id="close" viewBox="0 0 24 24">
           <path
-            d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-            data-original="#000000"></path>
-          <path
-            d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-            data-original="#000000"></path>
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
         </svg>
       </div>
+      <p class="pt-4 pb-6 text-gray-600 text-sm font-medium">Are you sure you want to delete this user <span id="modal_user_id" class="font-semibold text-red-500"></span>?</p>
 
-      <div class="my-6">
-      <p>Are you sure you want to delete the user with ID <span id="modal_user_id"></span>? This will also remove all comments made by the user.</p>
-      </div>
-
-      <div class="border-t border-gray-300 pt-6 flex justify-end gap-4">
+      <!-- Form for deleting user -->
+      <form id="deleteUserForm" method="POST" action="Controller/userDeleteController" class="border-t border-gray-300 pt-6 flex justify-end gap-4">
+        <input type="hidden" name="UserID" id="modal_user_id_input" value="">
         <button type="button" id="close"
           class="px-4 py-2 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Close</button>
-        <button type="button" onclick="window.location.href='delete-user?uid=<?= urlencode($uid) ?>'"
-          class="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600">Delete</button>
-      </div>
+        <button type="submit"
+          class="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600">
+          Delete
+        </button>
+      </form>
     </div>
   </div>
+
+  <script>
+    // Open modal and update user id in modal and hidden input
+    document.querySelectorAll('.modal-show').forEach(button => {
+      button.addEventListener("click", function () {
+        const UserID = this.getAttribute('data-user-id');
+        document.getElementById('modal').classList.remove('hidden');
+        document.getElementById('modal_user_id').textContent = UserID;
+        document.getElementById('modal_user_id_input').value = UserID;
+      });
+    });
+
+    // Close modal on click close button
+    document.querySelectorAll('#close').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.getElementById('modal').classList.add('hidden');
+      });
+    });
+  </script>
 </div>
-<script>
-  document.querySelectorAll('.modal-show').forEach(button => {
-  button.addEventListener("click", function() {
-    const UserID = this.getAttribute('data-user-id');
-    document.getElementById('modal').classList.remove('hidden');
-    document.getElementById('modal_user_id').textContent = UserID;
 
-    // Set the delete button link dynamically
-    const deleteBtn = document.querySelector('#modal button[onclick^="window.location.href"]');
-    deleteBtn.setAttribute('onclick', `window.location.href='Controller/userDeleteController.php?uid=${UserID}'`);
-  });
-});
-
-</script>
-<?php include 'Components/footer.php' ?>
+<?php include 'Components/footer.php'; ?>

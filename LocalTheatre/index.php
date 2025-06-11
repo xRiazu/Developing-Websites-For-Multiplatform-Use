@@ -12,7 +12,7 @@ $routes = [
     'login' => 'Pages/login.php', // login page route
     'blog' => 'Pages/blog.php', // blog page route
     'blogInfo' => 'Pages/bloginfo.php', // blog page route
-    'user/dashboard' => 'Pages/user/dashboard.php', // user page route
+    'User/dashboard' => 'Pages/User/dashboard.php', // user page route
 
     // admin dashboard
     'Admin/admindashboard' => 'Pages/Admin/admindashboard.php', // admin page route
